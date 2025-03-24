@@ -2,10 +2,10 @@
   "name": "assist-ai",
   "version": "0.0.1",
   "description": "Simple ai chatbot to connect with various LLM ai",
-  "main": "index.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "start": "node --loader ts-node/esm --watch ./index.ts",
+    "start": "node --loader ts-node/esm --watch ./src/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
