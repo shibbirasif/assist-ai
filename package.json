@@ -16,8 +16,12 @@
   "author": "Shibbir Ahmed",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "ollama": "^0.5.14",
+    "reflect-metadata": "^0.2.2",
+    "sqlite3": "^5.1.7",
+    "typeorm": "^0.3.21",
     "ws": "^8.18.1"
   },
   "devDependencies": {
