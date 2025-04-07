@@ -1,22 +1,32 @@
 import express from "express";
-import http from "http";
-import sessionRoutes from "./routes/sessionRoutes";
-import wsServer from "./websocket/websocketServer";
-import { initializeDatabase } from "./config/database";
+import { AppDataSource } from "./config/database";
+import chatSessionRoutes from "./routes/chatSessionRoutes";
+import * as dotenv from 'dotenv';
+import { findAvailablePort } from "./utils/portUtil";
+import { setupWebSocketServer } from "./websocket/websocket";
 
-const app = express();
-const server = http.createServer(app);
+dotenv.config();
 
-app.use(express.json());
-app.use("/api", sessionRoutes);
+async function main() {
+    try {
+        await AppDataSource.initialize();
+        console.log('Data Source has been initialized!');
 
-server.on("upgrade", (req, socket, head) => {
-    wsServer.handleUpgrade(req, socket, head, (socket) => {
-        wsServer.emit("connection", socket, req);
-    });
-});
+        const app = express();
+        app.use(express.json());
+        app.use('/sessions', chatSessionRoutes);
 
-server.listen(3000, async () => {
-    await initializeDatabase();
-    console.log("Server is running on port 3000");
-});
+        const port = await findAvailablePort(3000);
+        const server = app.listen(port, () => {
+            console.log(`Server is running on port ${port}`);
+        });
+
+        setupWebSocketServer(server);
+        console.log('WebSocket server is set up');
+
+    } catch (error) {
+        console.error('Error during startup:', error);
+    }
+}
+
+main();
