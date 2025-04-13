@@ -12,6 +12,7 @@ describe("SessionService Tests", () => {
     });
 
     afterAll(async () => {
+        await AppDataSource.dropDatabase();
         await AppDataSource.destroy();
     });
 

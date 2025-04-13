@@ -5,7 +5,7 @@ export class ChatSessionController {
     async getAllChatSessions(_req: Request, res: Response): Promise<void> {
         try {
             const chatSession = await sessionService.findAllChatSessions();
-            res.json({ chatSession: chatSession });
+            res.json({ chatSessions: chatSession });
         } catch (error) {
             res.status(500).json({ error: "Internal Server Error" });
         }

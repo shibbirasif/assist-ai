@@ -39,7 +39,7 @@ describe('WebSocket Server', () => {
         }
         await new Promise(res => setTimeout(res, 200));
         server.close();
-        // await AppDataSource.dropDatabase();
+        await AppDataSource.dropDatabase();
         await AppDataSource.destroy();
     });
 

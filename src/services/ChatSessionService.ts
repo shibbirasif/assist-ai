@@ -29,7 +29,13 @@ export class ChatSessionService {
     }
 
     async findAllChatSessions(): Promise<ChatSession[]> {
-        return chatSessionRepository.find();
+        return chatSessionRepository.find({
+            select: {
+                id: true,
+                title: true,
+                model: true
+            }
+        });
     }
 }
 
