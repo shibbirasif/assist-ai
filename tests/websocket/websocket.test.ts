@@ -5,7 +5,7 @@ import { setupWebSocketServer } from "../../src/websocket/websocket";
 import { generateResponse } from '../../src/utils/ollamaUtil';
 import { findAvailablePort } from "../../src/utils/portUtil";
 import chatSessionService from "../../src/services/ChatSessionService";
-import { setCommentRange } from "typescript";
+
 
 // Mock the generateResponse function to avoid actual Ollama calls during testing
 jest.mock('../../src/utils/ollamaUtil', () => ({
@@ -43,10 +43,8 @@ describe('WebSocket Server', () => {
         await AppDataSource.destroy();
     });
 
-
-
     beforeEach(async () => {
-        websocketClient = new WebSocket(`ws://localhost:${port}`);
+        websocketClient = new WebSocket(`ws://localhost:${port}?chatSessionId=${chatSessionId}`);
         await new Promise((resolve) => websocketClient.once('open', resolve));
         (generateResponse as jest.Mock).mockClear(); // Clear mock calls before each test
     });
@@ -55,9 +53,6 @@ describe('WebSocket Server', () => {
         if (websocketClient && websocketClient.readyState === WebSocket.OPEN) {
             websocketClient.close();
         }
-        // await AppDataSource.dropDatabase();
-        // await AppDataSource.initialize();
-
     });
 
     it('should establish a WebSocket connection', () => {
@@ -118,7 +113,7 @@ describe('WebSocket Server', () => {
             });
         });
 
-        expect(response).toHaveProperty('error', 'Invalid message format');
+        expect(response).toHaveProperty('error', 'Message content is required');
     });
 
 });
