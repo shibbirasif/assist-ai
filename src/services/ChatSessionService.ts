@@ -34,6 +34,9 @@ export class ChatSessionService {
                 id: true,
                 title: true,
                 model: true
+            },
+            order: {
+                createdAt: "DESC"
             }
         });
     }

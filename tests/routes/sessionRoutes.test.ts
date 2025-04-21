@@ -24,7 +24,7 @@ describe("Session API", () => {
     it("should create a new chat-session", async () => {
         const res = await request(app)
             .post("/chat-sessions")
-            .send({ model: "llama3.2:7b" });
+            .send({ title: 'abc', model: "llama3.2:7b" });
         expect(res.statusCode).toEqual(201);
         expect(res.body).toHaveProperty("id");
         expect(res.body).toHaveProperty("title");

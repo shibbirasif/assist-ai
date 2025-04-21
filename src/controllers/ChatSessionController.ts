@@ -26,8 +26,8 @@ export class ChatSessionController {
 
     async createChatSession(req: Request, res: Response): Promise<void> {
         try {
-            const { model } = req.body;
-            const chatSession = await sessionService.createChatSession('New Session', model);
+            const { title, model } = req.body;
+            const chatSession = await sessionService.createChatSession(title, model);
             res.status(201).json({ id: chatSession.id, title: chatSession.title, model: chatSession.model });
         } catch (error) {
             console.log(error);
