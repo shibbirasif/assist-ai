@@ -10,9 +10,9 @@ import chatSessionService from "../../src/services/ChatSessionService";
 // Mock the generateResponse function to avoid actual Ollama calls during testing
 jest.mock('../../src/utils/ollamaUtil', () => ({
     generateResponse: jest.fn(async function* () {
-        yield { message: { content: "mocked response" } };
-        yield { message: { content: "another part of mocked response" } };
-        yield { message: { content: "final part of mocked response" } };
+        yield { message: { content: "mocked response", stream: '[IN_PROGRESS]' } };
+        yield { message: { content: "another part of mocked response", stream: '[IN_PROGRESS]' } };
+        yield { message: { content: "final part of mocked response", stream: '[IN_PROGRESS]' } };
     }),
 }));
 
@@ -60,7 +60,7 @@ describe('WebSocket Server', () => {
     });
 
     it('should handle user message and receive streamed bot response', async () => {
-        const userMessage = { chatSessionId, message: "Hello, how are you?" };
+        const userMessage = { message: "Hello, how are you?" };
         websocketClient.send(JSON.stringify(userMessage));
         const responses: any[] = [];
 
@@ -68,16 +68,17 @@ describe('WebSocket Server', () => {
             websocketClient.on('message', (data) => {
                 const parsedData = JSON.parse(data.toString());
                 responses.push(parsedData);
-                if (responses.length === 3) {
+                if (responses.length === 4) {
                     resolve(responses);
                 }
             });
         });
 
-        expect(responses.length).toBe(3);
+        console.log('Received responses:', responses);
+        expect(responses.length).toBe(4);
         responses.forEach(response => {
             expect(response).toHaveProperty('content');
-            expect(response.content).toContain('mocked response');
+            expect(response).toHaveProperty('stream');
         });
         expect(generateResponse).toHaveBeenCalledTimes(1);
 

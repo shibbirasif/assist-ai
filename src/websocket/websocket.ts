@@ -71,9 +71,10 @@ export function setupWebSocketServer(server: Server, existingSessionIds: Set<str
                     let streamMessage = "";
 
                     for await (const part of stream) {
-                        socket.send(JSON.stringify({ content: part.message.content }));
+                        socket.send(JSON.stringify({ role: 'assistant', content: part.message.content, stream: '[IN_PROGRESS]' }));
                         streamMessage += ' ' + part.message.content;
                     }
+                    socket.send(JSON.stringify({ role: 'assistant', content: '', stream: '[DONE]' }));
 
                     messages.push({ role: "assistant", content: streamMessage });
                     await chatSessionService.updateChatSession(chatSession.id, messages);
