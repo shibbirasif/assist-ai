@@ -3,7 +3,6 @@ import { WebSocketServer } from 'ws';
 import chatSessionService from '../services/ChatSessionService';
 import { generateResponse } from '../utils/ollamaUtil';
 import { parse } from 'url';
-import { URLSearchParams } from 'url';
 
 export function setupWebSocketServer(server: Server, existingSessionIds: Set<string> = new Set()) {
     const websocketServer = new WebSocketServer({ server });
