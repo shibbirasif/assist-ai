@@ -5,6 +5,7 @@ export class AiModelsController {
 
     async getAvailableModels(_req: Request, res: Response): Promise<void> {
         try {
+            console.log("Fetching models from Ollama...");
             const models = await listModels();
             const modelNames = models.map(model => model.name);
             res.json({ models: modelNames });
