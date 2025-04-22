@@ -1,7 +1,7 @@
-import express from "express";
+import { Router } from 'express';
 import { ChatSessionController } from "../controllers/ChatSessionController";
 
-const router = express.Router();
+const router = Router();
 const chatSessionController = new ChatSessionController();
 
 router.post("/", chatSessionController.createChatSession);

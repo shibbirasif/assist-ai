@@ -4,6 +4,7 @@ import chatSessionRoutes from "./routes/chatSessionRoutes";
 import * as dotenv from 'dotenv';
 import cors from 'cors';
 import { setupWebSocketServer } from "./websocket/websocket";
+import aiModelsRoutes from "./routes/aiModelsRoutes";
 
 dotenv.config();
 
@@ -15,7 +16,10 @@ async function main() {
         const app = express();
         app.use(cors());
         app.use(express.json());
+
+        // Routes
         app.use('/chat-sessions', chatSessionRoutes);
+        app.use('/ai-models', aiModelsRoutes);
 
         const port = process.env.PORT
         const server = app.listen(port, () => {

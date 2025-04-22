@@ -7,3 +7,14 @@ export async function generateResponse(model: string, messages: Message[]) {
         stream: true,
     });
 }
+
+
+export async function listModels() {
+    try {
+        const response = await ollama.list();
+        return response.models;
+    } catch (error) {
+        console.error('Error listing models:', error);
+        return [];
+    }
+}
